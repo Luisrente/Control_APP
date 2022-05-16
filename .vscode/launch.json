@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "gob_cordoba",
+            "cwd": "APP/gob_cordoba",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "gob_cordoba (profile mode)",
+            "cwd": "APP/gob_cordoba",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "gob_cordoba (release mode)",
+            "cwd": "APP/gob_cordoba",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
