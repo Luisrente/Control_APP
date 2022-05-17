@@ -95,11 +95,10 @@ class CarnetService extends ChangeNotifier{
       
     } catch (e) {
     }
-
     if(isLoading==true)
     {
     }else{
-     final ScanModel scans= await DBProvider.db.getScanById(12);
+     final ScanModel scans= await DBProvider.db.getScanById(1);
      if(scans.tipo==null){
        print('null');
      }else{

@@ -43,33 +43,76 @@ class ControlScreen extends StatelessWidget {
                   });
   }
   
-  void displayDialog (BuildContext context, ScanModel documento){
+  void displayDialog (BuildContext context , ScanModel model){
     showDialog(
                   barrierDismissible: false,
                   context: context,
                   builder: (context) {
                     return AlertDialog(
                         elevation: 5,
-                        title:  Text('${documento.tipo}',
-                            style: TextStyle(color: Colors.blue)),
+                        title:  Center(
+                          child: Text( '$model.tipo',
+                              style: TextStyle(color: Colors.black)),
+                        ),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadiusDirectional.circular(10)),
                         content: Column(
                             mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Text(
-                                  'Qui aute reprehenderit dolor ipsum occaecat reprehenderit. Ullamco ex ad dolore voluptate occaecat non ea laborum et Lorem eiusmod eu magna aliquip. Enim minim et laborum nostrud consequat velit est cupidatat tempor. Ad exercitation incididunt laboris magna consectetur adipisicing voluptate eu consequat velit ad. Minim esse et culpa aute amet ullamco.')
-                            ]),
+                            children:[
+                              Row(
+                                children: const [
+                                  Text('Documento  : ', style: TextStyle(fontWeight: FontWeight.bold) ),
+                                  Text('1193565289')
+                                ]
+                              ),
+
+                               SizedBox(height: 10),
+
+                              Row(
+                                children: const [
+                                  Text('Dependencia : ', style: TextStyle(fontWeight: FontWeight.bold) ),
+                                  Text('Sec Educacion')
+                                ]
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: const [
+                                  Text('Cargo : ', style: TextStyle(fontWeight: FontWeight.bold) ),
+                                  Text('Contador publico',  maxLines: 2)
+                                ]
+                              )
+                            ]
+                            
+                            ),
                         actions: [
-                          Center(
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    primary: Colors.orange.shade500),
-                                onPressed: () {
-                                 // widget.check!.terms = true;
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Aceptar')),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton.icon(
+                                    icon: const  Icon(Icons.close),
+                                    style: ElevatedButton. styleFrom(
+                                    primary: Colors.red),
+                                    onPressed: () {
+                                     // widget.check!.terms = true;
+                                      Navigator.pop(context);
+                                    },
+                                    label: const Text('Cancelar', style: TextStyle(fontSize: 15))
+                                ),
+                                SizedBox(width: 10),
+                                ElevatedButton.icon(
+                                    icon: const Icon(Icons.check),
+                                    style: ElevatedButton. styleFrom(
+                                    primary: Colors.green),
+                                    onPressed: () {
+                                     // widget.check!.terms = true;
+                                      Navigator.pop(context);
+                                    },
+                                    label: const Text('Aceptar ', style: TextStyle(fontSize: 15))
+                                ),
+                              ],
+                            ),
                           )
                         ]);
                   });
@@ -87,10 +130,28 @@ class ControlScreen extends StatelessWidget {
 
     final carnetservice= Provider.of<CarnetService>(context);
     // final tempScan = new Carnet(birthday: 'd', carg: 'duu', documentId: 1, email: 'luis.gmail.com', fechaingreso: '5/6/2001', firstname: 'Luis', plant: 'Secretario', secondsname: 'Pedro', sex: 'M');
-    final tempScan = new ScanModel( id: 12 , valor: 'Luis Freth', tipo: 'http' );
+    // final tempScan1 = new ScanModel( id: 1 , valor: 'Luis Freth', tipo: 'http' );
+    // final tempScan2 = new ScanModel( id: 2 , valor: 'Luis Freth', tipo: 'http' );
+    // final tempScan3 = new ScanModel( id: 3 , valor: 'Luis Freth', tipo: 'http' );
+    // final tempScan4 = new ScanModel( id: 4 , valor: 'Luis Freth', tipo: 'http' );
+    // final tempScan5 = new ScanModel( id: 5 , valor: 'Luis Freth', tipo: 'http' );
+    // final tempScan6 = new ScanModel( id: 6 , valor: 'Luis Freth', tipo: 'http' );
+    // final tempScan7 = new ScanModel( id: 7 , valor: 'Luis Freth', tipo: 'http' );
+    // final tempScan8 = new ScanModel( id: 8 , valor: 'Luis Freth', tipo: 'http' );
+    // final tempScan9 = new ScanModel( id: 9 , valor: 'Luis Freth', tipo: 'http' );
+    // final tempScan10 = new ScanModel( id: 10 , valor: 'Luis Freth', tipo: 'http' );
 
     // final tempScan = new ScanModel( id: 12, valor: 'dcdcfsfsdfsf');
-     DBProvider.db.nuevoScan(tempScan); 
+    //  DBProvider.db.nuevoScan(tempScan1); 
+    //  DBProvider.db.nuevoScan(tempScan2); 
+    //  DBProvider.db.nuevoScan(tempScan3); 
+    //  DBProvider.db.nuevoScan(tempScan4); 
+    //  DBProvider.db.nuevoScan(tempScan5); 
+    //  DBProvider.db.nuevoScan(tempScan6); 
+    //  DBProvider.db.nuevoScan(tempScan7); 
+    //  DBProvider.db.nuevoScan(tempScan8); 
+    //  DBProvider.db.nuevoScan(tempScan9); 
+    //  DBProvider.db.nuevoScan(tempScan10); 
     // int id=1234567;
     //  DBProvider.db.getScanById(id).then((scan){
     //  if(scan==null){
@@ -149,17 +210,20 @@ class ControlScreen extends StatelessWidget {
               )
             ),
             Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom( primary: Colors.orange.shade500),
-                    onPressed: () { 
-                      print('entros');
-                      int documentId= 111 ;      
-                       displayDialono(context);
-                      //Navigator.pop(context);
-                      print('paso');
-                       },
-                    child: const Text('Consultar', style: TextStyle(fontSize: 20))),
+              padding: const EdgeInsets.symmetric(vertical: 20 ),
+                  child: Center(
+                         child: ElevatedButton.icon(
+                                icon: const Icon(Icons.search),
+                                style: ElevatedButton.styleFrom(
+                                shape: const StadiumBorder(),
+                                primary: Colors.orange),
+                                onPressed: () {
+                                // widget.check!.terms = true;
+                                // displayDialog(context);
+                                 },
+                    label: const Text('Consultar ', style: TextStyle(fontSize: 20))
+                   ),
+                 ),
               ),
           ],
         )
@@ -190,7 +254,7 @@ class ControlScreen extends StatelessWidget {
                  if(scans.tipo==null){
                    displayDialono(context);
                    }else{
-                   displayDialog(context, scans);
+                   displayDialog(context,scans);
                     }
                // displayDialog(context, documentId);
               }

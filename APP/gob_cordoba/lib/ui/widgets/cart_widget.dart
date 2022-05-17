@@ -25,6 +25,7 @@ class CardWidget extends StatelessWidget {
     double height = MediaQuery.of(context).size.height* 0.70;
     double width = MediaQuery.of(context).size.width;
 
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20 , vertical: 30),
       child: Container(
@@ -41,7 +42,6 @@ class CardWidget extends StatelessWidget {
                 Container(
                   child: Column(
                     children: [
-
                       Padding(
                         padding: const EdgeInsets.only(top: 10, left: 25, right: 25, bottom: 10),
                         child: Row(

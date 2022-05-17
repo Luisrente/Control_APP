@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gob_cordoba/services/services.dart';
 import 'package:gob_cordoba/ui/screen/screens.dart';
+import 'package:gob_cordoba/ui/widgets/style_widget.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp( const AppState());
@@ -32,6 +33,8 @@ class MyApp extends StatelessWidget {
         'login'  : (_) =>  const LoginScreen(),
         'control'  : (_) =>  const ControlScreen(),
         'check'  : (_) =>  const  CheckAuthScreen(),
+        'q'  : (_) =>    Home(),
+        
       },
       scaffoldMessengerKey: NotificationsService.messengerKey,
     );
