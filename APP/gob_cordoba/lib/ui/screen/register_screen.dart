@@ -1,54 +1,60 @@
 
 import 'package:flutter/material.dart';
+import 'package:gob_cordoba/models/models.dart';
 import 'package:gob_cordoba/services/auth_service.dart';
+import 'package:gob_cordoba/services/carnet_services.dart';
 import 'package:gob_cordoba/services/notications_service.dart';
 import 'package:gob_cordoba/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import '../../provider/login_form_provider.dart';
 
-class LoginScreen extends StatelessWidget {
-
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-
-    final authService= Provider.of<AuthService>(context, listen: false);
-    print('------------------');
-    print(authService.readToken());
-    print('------------------');
+      final tam = MediaQuery.of(context).size.height * 0.17;
 
     return  Scaffold(
-      body: AuthBackGround(
-        child: SingleChildScrollView(
-          child: Column(
-            children:  [
-              const SizedBox(height: 250),
-              CardContainer(
-                child:  Column(
-                  children: [
-                     const SizedBox( height: 10),
-                     Text('Control de acceso',style: Theme.of(context).textTheme.headline4),
-                     const SizedBox( height: 30),
-                     ChangeNotifierProvider(
-                       create: (_) => LoginFormProvider( ),
-                       child: _Login_Form()
-                     ),
-                  ]
-                )
+      appBar: 
+      AppBar(
+         actions:[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('assets/logo.png',
+                fit: BoxFit.cover, alignment: Alignment.center),
+          ),
+          SizedBox(width: tam)
+      ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children:  [
+            const SizedBox(height: 80),
+            CardContainer(
+              child:  Column(
+                children: [
+                   const SizedBox( height: 10),
+                   Text('Registro',style: Theme.of(context).textTheme.headline4),
+                   const SizedBox( height: 30),
+                   ChangeNotifierProvider(
+                     create: (_) => LoginFormProvider( ),
+                     child: _Login_Form()
+                   ),
+                ]
+              )
+            ),
+            const SizedBox(height:50),
+             TextButton(
+              onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
+              style: ButtonStyle(
+                overlayColor: MaterialStateProperty.all(Color.fromARGB(255, 6, 151, 235)),
+                shape: MaterialStateProperty.all( const StadiumBorder())
               ),
-              const SizedBox(height:50),
-               TextButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, 'register'),
-                style: ButtonStyle(
-                  overlayColor: MaterialStateProperty.all(Color.fromARGB(255, 6, 151, 235)),
-                  shape: MaterialStateProperty.all( const StadiumBorder())
-                ),
-                child: const Text('Create new account ', style: TextStyle( fontSize: 18, color: Colors.black87)),
-              ),
-              const SizedBox(height:50),
-            ]
-          )
-        ) 
+              child: const Text('¿Ya tengo una cuenta? ', style: TextStyle( fontSize: 18, color: Colors.black87)),
+            ),
+            const SizedBox(height:50),
+          ]
+        )
       ),
     );
   }
@@ -64,6 +70,7 @@ class _Login_Form extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final loginForm= Provider.of<LoginFormProvider>(context);
+     
 
     return Container(
       child:  Form(
@@ -105,8 +112,32 @@ class _Login_Form extends StatelessWidget {
                   : 'La constraseña debede ser de 6 caracteres';
               },
             ),
+              const SizedBox(height: 30),
+              TextFormField(
+              autocorrect: false,
+              // obscureText: true,
+              keyboardType: TextInputType.name,
+              decoration: InputDecorations.authInputDecoration(
+                hinText: 'Jose',
+                labelText: 'Nombre',
+                prefixIcon: Icons.contact_page_outlined
+              ),
+              onChanged: (value) => loginForm.name= value,
+            ),
+
             const SizedBox(height: 30),
 
+              TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecorations.authInputDecoration(
+                      hinText: '12134', 
+                      labelText: 'Numero de identificacion',
+                       prefixIcon: Icons.numbers
+                  ),
+              onChanged: (value) => loginForm.documento= value,   
+             ),
+
+            const SizedBox(height: 30),
             MaterialButton(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               disabledColor: Colors.grey,
@@ -117,20 +148,35 @@ class _Login_Form extends StatelessWidget {
                 child:  Text(
                    loginForm.isLoading 
                    ? 'Espere...'
-                   : 'Ingresar', 
+                   : 'Registrar', 
                 style:  const TextStyle(color: Colors.white),
                 )
               ),
               onPressed:  loginForm.isLoading ? null : () async {
                 FocusScope.of(context).unfocus();
              final authService= Provider.of<AuthService>(context, listen:false);
-                   
+             final carnetService= Provider.of<CarnetService>(context, listen: false);
+
                 if(!loginForm.isValidForm()) return ;
                 loginForm.isLoading= true;
                 await Future.delayed( const Duration(seconds: 2));
                 //Validar si el login es correcto
 
-               final String? errorMessage= await authService.login(loginForm.email,loginForm.password);
+               final String? errorMessage= await authService.createUser(loginForm.email,loginForm.password);
+
+               final  Usuario dato = Usuario(
+                  document: loginForm.documento,
+                  email: loginForm.email ,
+                  name: loginForm.name,
+                  password : loginForm.password,
+               );
+
+               final String? errorMesaage= await carnetService.createProduct(dato);
+
+               print('èrro');
+               print(errorMesaage);
+               print('jfjjffjjfj');
+
                 if(errorMessage == null){
                 Navigator.pushReplacementNamed(context, 'home');
                 }else{

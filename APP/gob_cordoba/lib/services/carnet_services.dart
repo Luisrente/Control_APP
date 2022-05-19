@@ -17,6 +17,7 @@ class CarnetService extends ChangeNotifier{
   late Carnet? carnets ;
   final storage = new FlutterSecureStorage();
   List<ScanModel> scans = [];
+  List<Usuario> usuarios = [];
    
    ScanListProvider base= new ScanListProvider();
 
@@ -34,7 +35,7 @@ class CarnetService extends ChangeNotifier{
   }
  
   // TODO: 
-   Future <Carnet> loadCartUser() async {
+   Future <Usuario> loadCartUser() async {
     //isLoading = true;
     //notifyListeners();
     // Carnet dato = Carnet();
@@ -46,53 +47,77 @@ class CarnetService extends ChangeNotifier{
     // final tempScan = new Carnet(birthday: 'd', carg: 'duu', documentId: 1, email: 'luis.gmail.com', fechaingreso: '5/6/2001', firstname: 'Luis', plant: 'Secretario', secondsname: 'Pedro', sex: 'M');
 
 
-    Carnet dato1 = Carnet();
+    Usuario dato1 = Usuario();
 
-   final firstname= await storage.read(key:'firstname') ?? '';
-   final document= await storage.read(key:'documentId') ?? '';
-   print(document+ 'ijlljj');
-    if( firstname != '' ){
-         int documentId= int.parse('$document');
-        Carnet dato1 = Carnet(firstname: '$firstname' , documentId: documentId);
-        return dato1;
-    }else{
-    final url = Uri.https( _baseUrl, 'gob/empleado.json');
+   final firstname= await storage.read(key:'email') ?? '';
+   final document= await storage.read(key:'token') ?? '';
+
+    final url = Uri.https( _baseUrl, 'Usuario.json', {
+      'auth': await storage.read(key: 'token') ?? '',
+    });
     final resp = await http.get(url);
-    final  productsMap= json.decode(resp.body);
-    Carnet dato = Carnet();
-    dato=Carnet.fromJson(productsMap);
-    String document= dato.documentId.toString();
-    //print(document);
-    await storage.write(key: 'documentId', value: document );
-    await storage.write(key: 'birthday', value: dato.birthday);
-    await storage.write(key: 'carg', value: dato.carg);
-    await storage.write(key: 'email', value: dato.email);
-    await storage.write(key: 'fechaingreso', value: dato.fechaingreso);
-    await storage.write(key: 'firstname', value: dato.firstname);
-    await storage.write(key: 'plant', value: dato.plant);
-    await storage.write(key: 'secondsname', value: dato.secondsname);
-    await storage.write(key: 'sex', value: dato.sex);
-    return dato;    
+    final Map<String, dynamic> productsMap= json.decode(resp.body);
 
+    productsMap.forEach(( key , value){
+      final tempProduct = Usuario.fromMap(value);
+      this.usuarios.add(tempProduct);
+    });
 
+    for (var i = 0; i <= usuarios.length; i++) {
 
+      if(usuarios[i].email == firstname){
+        print(usuarios[i]);
+        return  usuarios[i];
+      }
     }
-  }
 
+    return dato1;
+
+    // if( firstname != '' ){
+    //      //int documentId= int.parse('$document');
+    //     //Carnet dato1 = Carnet(firstname: '$firstname' , documentId: documentId);
+    //     return dato1;
+    // }else{
+    // final url = Uri.https( _baseUrl, 'gob/empleado.json');
+    // final resp = await http.get(url);
+    // final  productsMap= json.decode(resp.body);
+    // Carnet dato = Carnet();
+    // dato=Carnet.fromJson(productsMap);
+    // String document= dato.documentId.toString();
+    // //print(document);
+    // await storage.write(key: 'documentId', value: document );
+    // await storage.write(key: 'birthday', value: dato.birthday);
+    // await storage.write(key: 'carg', value: dato.carg);
+    // await storage.write(key: 'email', value: dato.email);
+    // await storage.write(key: 'fechaingreso', value: dato.fechaingreso);
+    // await storage.write(key: 'firstname', value: dato.firstname);
+    // await storage.write(key: 'plant', value: dato.plant);
+    // await storage.write(key: 'secondsname', value: dato.secondsname);
+    // await storage.write(key: 'sex', value: dato.sex);
+    // return dato;    
+    // }
+
+
+
+
+  }
 
   Future <ScanModel> loadCarstAdmin( int documentId) async {
     isLoading = true;
     notifyListeners();
-    final url = Uri.https( _baseUrl, 'gob.json');
+    
+    final url = Uri.https( _baseUrl, 'Usuario.json');
     final resp = await http.get(url);
     final  productsMap= json.decode(resp.body);
+
+
+
+
     isLoading= false;
     notifyListeners();
     ScanModel scans1= ScanModel();
-
     try {
        await Future.delayed(const Duration(seconds: 4));
-      
     } catch (e) {
     }
     if(isLoading==true)
@@ -131,20 +156,18 @@ class CarnetService extends ChangeNotifier{
   //    return product.id!;
   // }
 
-  //  Future<String> createProduct(Product product ) async{
+   Future<String> createProduct( Usuario product ) async{
+    final url = Uri.https( _baseUrl, 'Usuario.json');
+    final resp = await http.post(url, body: product.toJson());
+    final decodedData= json.decode(resp.body);
+    //product.id= decodedData['name'];
+    // this.products.add(product);
+    print('jjjyjy');
+    print(decodedData);
+    print('jjtjtjjtjtj');
+    return product.email!;
 
-
-  //   final url = Uri.https( _baseUrl, 'Products.json', {
-  //     'auth': await storage.read(key: 'token') ?? '',
-  //   });
-  //   final resp = await http.post(url, body: product.toJson()  );
-  //   final decodedData= json.decode(resp.body);
-  //   product.id= decodedData['name'];
-  //   this.products.add(product);
-  //   print(decodedData);
-  //   return product.id!;
-
-  // }
+  }
 
   // void updateSelectedProductImage( String path){
     

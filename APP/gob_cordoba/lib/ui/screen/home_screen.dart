@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gob_cordoba/services/services.dart';
 import 'package:gob_cordoba/ui/screen/screens.dart';
 import 'package:gob_cordoba/ui/widgets/widgets.dart';
@@ -10,15 +11,22 @@ class HomeScreen extends StatelessWidget {
    
   const HomeScreen({Key? key}) : super(key: key);
   
-   
-
-
   @override
   Widget build(BuildContext context) {
   final tam = MediaQuery.of(context).size.height * 0.17;
   final carnetservice= Provider.of<CarnetService>(context);
+  carnetservice.loadCartUser();
 
+   
   final authService= Provider.of<AuthService>(context , listen: false);
+  final storage = new FlutterSecureStorage();
+
+
+  final  t= authService.readToken();
+
+   
+
+
   if(carnetservice.isLoading) return const LoadingScreen();
     return  Scaffold(
        appBar: 
@@ -35,13 +43,13 @@ class HomeScreen extends StatelessWidget {
           icon: const  Icon( Icons.login_outlined , color: Colors.black),
           onPressed: () async{
             await authService.logunt();
-            Navigator.pushReplacementNamed(context, 'control');
+            Navigator.pushReplacementNamed(context, 'login');
           }
         ),
         backgroundColor: Colors.white,
         elevation: 1
       ),
-      body: FutureBuilder<Carnet>(
+      body: FutureBuilder<Usuario>(
         future: carnetservice.loadCartUser(),
         builder: (context, snapshot) {
           if(snapshot.hasData){

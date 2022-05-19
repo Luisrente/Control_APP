@@ -18,7 +18,8 @@ class CheckAuthScreen extends StatelessWidget {
            builder: (BuildContext context, AsyncSnapshot<String> snapshot){
              if(!snapshot.hasData)
               return const Text('Espere');
-             if ( snapshot == ''){
+
+             if ( snapshot.data == ''){
               Future.microtask((){
                 Navigator.pushReplacement(context, PageRouteBuilder(
                   pageBuilder: ( _ , __ , ___) => const LoginScreen(),

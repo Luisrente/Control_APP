@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../data/AES.dart';
-import '../../models/carnet_model.dart';
+import '../../models/models.dart';
 
 class CardWidget extends StatelessWidget {
 
 
-  final Carnet dato;
+  final Usuario dato;
 
   const CardWidget({Key? key,  required this.dato}) : super(key: key);
 
@@ -20,7 +20,7 @@ class CardWidget extends StatelessWidget {
     final carnetservice= Provider.of<CarnetService>(context);
 
     final EncryptionService encryptionService= new EncryptionService();
-    String documentId = dato.documentId.toString();
+    String documentId = dato.document!;
     print(documentId);
     double height = MediaQuery.of(context).size.height* 0.70;
     double width = MediaQuery.of(context).size.width;

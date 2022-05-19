@@ -27,16 +27,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ControlGob',
       debugShowCheckedModeBanner: false,
-      initialRoute: 'login',
+      initialRoute: 'check',
       routes: {
         'home'  : (_) =>  const HomeScreen(),
         'login'  : (_) =>  const LoginScreen(),
         'control'  : (_) =>  const ControlScreen(),
         'check'  : (_) =>  const  CheckAuthScreen(),
+        'register'  : (_) =>  const  RegisterScreen(),
         'q'  : (_) =>    Home(),
         
       },
       scaffoldMessengerKey: NotificationsService.messengerKey,
     );
   }
+
 }

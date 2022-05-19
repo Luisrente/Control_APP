@@ -40,7 +40,6 @@ class CheckInternetConnection {
       _controller.sink.add(ConnectionStatus.offline);
     }
   }
-
   Future<void> close() async {
     await _connectionSubscription?.cancel();
     await _controller.close();
