@@ -3,10 +3,7 @@ import 'package:gob_cordoba/services/services.dart';
 import 'package:gob_cordoba/ui/screen/screens.dart';
 import 'package:gob_cordoba/ui/widgets/style_widget.dart';
 import 'package:provider/provider.dart';
-
 void main() => runApp( const AppState());
-
-
 class AppState extends StatelessWidget {
   const  AppState({ Key? key }) : super(key: key);
   @override

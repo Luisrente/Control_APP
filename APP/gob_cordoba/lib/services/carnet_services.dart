@@ -50,26 +50,85 @@ class CarnetService extends ChangeNotifier{
     Usuario dato1 = Usuario();
 
    final firstname= await storage.read(key:'email') ?? '';
-   final document= await storage.read(key:'token') ?? '';
+   final name= await storage.read(key:'name') ?? '';
+   final document= await storage.read(key:'document') ?? '';
+   final email1= await storage.read(key:'email1') ?? '';
+   final password= await storage.read(key:'password') ?? '';
+
+    print(name + 'Primera ');
+    
+    if( name != '' ){
+
+      print('Entro por primera vez');
+
+      final  Usuario dato = Usuario(
+                  document: document,
+                  email: email1 ,
+                  name: name,
+                  password : password,
+               );
+
+        return dato;
+
+    }else{
+
+        final url = Uri.https( _baseUrl, 'Usuario.json', {
+      'auth': await storage.read(key: 'token') ?? '',
+    });
+    final resp = await http.get(url);
+    final Map<String, dynamic> productsMap= json.decode(resp.body);
+    productsMap.forEach(( key , value){
+      final tempProduct = Usuario.fromMap(value);
+      this.usuarios.add(tempProduct);
+    });
+    print(firstname);
+    for (var i = 0; i < usuarios.length-1 ; i++) { 
+      String dato= usuarios[i].email!;
+      //print(dato);
+      if(dato == firstname){
+        print('Entro ddddddd');
+        //print('$usuarios[i]');
+        print(usuarios[i]);
+        await storage.write(key: 'document', value: usuarios[i].document);
+        await storage.write(key: 'email1', value: usuarios[i].email);
+        await storage.write(key: 'name', value: usuarios[i].name);
+        await storage.write(key: 'password', value: usuarios[i].password);
+        return  usuarios[i];
+      }
+    }
+
+
+
+
+    }
+
+
 
     final url = Uri.https( _baseUrl, 'Usuario.json', {
       'auth': await storage.read(key: 'token') ?? '',
     });
     final resp = await http.get(url);
     final Map<String, dynamic> productsMap= json.decode(resp.body);
-
     productsMap.forEach(( key , value){
       final tempProduct = Usuario.fromMap(value);
       this.usuarios.add(tempProduct);
     });
-
-    for (var i = 0; i <= usuarios.length; i++) {
-
-      if(usuarios[i].email == firstname){
+    print(firstname);
+    for (var i = 0; i < usuarios.length-1 ; i++) { 
+      String dato= usuarios[i].email!;
+      //print(dato);
+      if(dato == firstname){
+        print('Entro ddddddd');
+        //print('$usuarios[i]');
         print(usuarios[i]);
+        await storage.write(key: 'document', value: usuarios[i].document);
+        await storage.write(key: 'email', value: usuarios[i].email);
+        await storage.write(key: 'name', value: usuarios[i].name);
+        await storage.write(key: 'password', value: usuarios[i].password);
         return  usuarios[i];
       }
     }
+
 
     return dato1;
 
@@ -109,10 +168,6 @@ class CarnetService extends ChangeNotifier{
     final url = Uri.https( _baseUrl, 'Usuario.json');
     final resp = await http.get(url);
     final  productsMap= json.decode(resp.body);
-
-
-
-
     isLoading= false;
     notifyListeners();
     ScanModel scans1= ScanModel();

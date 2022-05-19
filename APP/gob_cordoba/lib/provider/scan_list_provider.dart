@@ -9,11 +9,11 @@ class ScanListProvider  {
 
   Future<ScanModel> nuevoScan(String valor) async {
     final nuevoScan = new ScanModel(valor: valor);
-    final id = await DBProvider.db.nuevoScan(nuevoScan);
-    nuevoScan.id = id;
-    if (this.tipoSeleccionado == nuevoScan.tipo) {
-      this.scans.add(nuevoScan);
-    }
+    // final id = await DBProvider.db.nuevoScan(nuevoScan);
+    // nuevoScan.id = id;
+    // if (this.tipoSeleccionado == nuevoScan.tipo) {
+    //   this.scans.add(nuevoScan);
+    // }
     return nuevoScan;
   }
 
